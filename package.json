@@ -1,6 +1,6 @@
 {
   "name": "console-pets",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Cute ASCII pets for your console that react to command success/failure",
   "main": "index.js",
   "bin": {

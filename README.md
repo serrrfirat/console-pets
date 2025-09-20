@@ -10,7 +10,6 @@ A tiny, delightful library that shows adorable ASCII pets in your terminal. Perf
 - 😊 **2 moods**: Happy (success) and Sad (error)
 - 🎨 **Colorful output** with emoji reactions
 - 📝 **Auto-commenting**: Automatically add pet comments to new files
-- ⚡ **Super lightweight** - just ~200 lines of code
 - 🔧 **Smart configuration** with project and global settings
 - 🎯 **Multiple usage patterns**
 
@@ -62,10 +61,10 @@ npx console-pets setup-scripts
 ```json
 {
   "scripts": {
-    "dev": "console-pets && vite dev",
-    "test": "console-pets && jest",
-    "build": "console-pets && webpack",
-    "lint": "console-pets && eslint ."
+    "dev": "npx console-pets && vite dev",
+    "test": "npx console-pets && jest",
+    "build": "npx console-pets && webpack",
+    "lint": "npx console-pets && eslint ."
   }
 }
 ```
@@ -148,17 +147,6 @@ console-pets remove-scripts  # Remove console-pets from all package.json scripts
 console-pets-run "<command>" # Run command with pet feedback
 ```
 
-## The Pets
-
-| Pet | Happy | Sad |
-|-----|-------|-----|
-| **Cat** 🐱 | `( ^.^ )` | `( T.T )` |
-| **Dog** 🐶 | `( ◡ ◡ )` | `( ; ; )` |
-| **Robot** 🤖 | `│ ^.^ │` | `│ -.─ │` |
-| **Dragon** 🐉 | `( ^.^ )` | `( -.─ )` |
-| **Hamster** 🐹 | `( ^.^ )` | `( -.─ )` |
-| **Alien** 👽 | `∩─ ^.^ ─∩` | `∩─ -.─ ─∩` |
-
 ## Auto-Commenting Feature ✨
 
 Console Pets can automatically add cute pet comments to your files!
@@ -181,9 +169,9 @@ npx console-pets add-comment existing-file.js
 
 **JavaScript File:**
 ```javascript
-//    /\_/\
-//   ( ^.^ )
-//    > ^ <
+//    /\_   _/\
+//   (  o.o  )
+//    > ^ ^ <
 // Your coding companion cat was here 🐱
 function hello() {
   console.log('Hello from your pet!');
@@ -193,10 +181,10 @@ function hello() {
 **HTML File:**
 ```html
 <!--
-     /\_/\
-    ( ^.^ )
-     > ^ <
-  Made with love by your pet cat 🐱
+    /\_   _/\
+   (  o.o  )
+    > ^ ^ <
+   Made with love by your pet cat 🐱
 -->
 <!DOCTYPE html>
 <html>
@@ -208,11 +196,16 @@ function hello() {
 **CSS File:**
 ```css
 /*
- *   ┌─────┐
- *   │ ^.^ │
- *   │  ▄  │
- *   └─┬─┬─┘
- *     ╵ ╵
+ *   ┌─────────┐
+ *   │ ◉     ◉ │
+ *   │    ▄    │
+ *   │  \_____/  │
+ *   └─┬─────┬─┘
+ *     │ ■ ■ │
+ *   ┌─┴─────┴─┐
+ *   │ [ ] [ ] │
+ *   └─────────┘
+ *    /│\   /│\
  * Built with robot power 🤖
  */
 body {
@@ -222,9 +215,9 @@ body {
 
 **Python File:**
 ```python
-#    /\_/\
-#   ( ^.^ )
-#    > ^ <
+#    /\_   _/\
+#   (  o.o  )
+#    > ^ ^ <
 # cat approves this code 🐱
 def hello():
     print("Hello from your pet!")
@@ -276,9 +269,9 @@ npx console-pets add-comment myfile.js
 ```json
 {
   "scripts": {
-    "start": "console-pets && react-scripts start",
-    "test": "console-pets && react-scripts test",
-    "build": "console-pets && react-scripts build"
+    "start": "npx console-pets && react-scripts start",
+    "test": "npx console-pets && react-scripts test",
+    "build": "npx console-pets && react-scripts build"
   }
 }
 ```
@@ -427,7 +420,7 @@ Pull requests welcome! Ideas for new pets or features:
 
 ## License
 
-MIT © Console Pets Team
+MIT © Manoj Ahirwar
 
 ---
 
