@@ -39,7 +39,7 @@ module.exports = {
     pets: ['cat', 'dog'],       // Pets to use (rotates randomly)
     fileTypes: [                // File extensions to auto-comment
       '.js', '.ts', '.jsx', '.tsx',
-      '.html', '.css', '.vue', '.py'
+      '.html', '.css', '.vue'
     ],
     position: 'top',            // Where to place comments: 'top' or 'bottom'
     templates: [                // Comment templates ({pet} and {emoji} are replaced)

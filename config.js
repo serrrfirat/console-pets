@@ -17,7 +17,7 @@ class Config {
       // Auto-comment settings
       autoComment: {
         showOnCreate: true,  // Add comments when creating new files
-        pets: ['cat', 'dog', 'robot'], // Rotate between these
+        pets: ['cat', 'dog'], // Rotate between these
         fileTypes: ['.js', '.ts', '.jsx', '.tsx', '.html', '.css', '.scss', '.vue', '.py'],
         commentStyles: {
           '.js': '// ',
@@ -109,33 +109,25 @@ class Config {
 // This file controls how Console Pets behaves in your project
 
 module.exports = {
-  // Auto-commenting settings
-  autoComment: {
-    enabled: true,              // Enable/disable auto-commenting
-    pets: ['cat', 'dog'],       // Pets to use (rotates randomly)
-    fileTypes: [                // File extensions to auto-comment
-      '.js', '.ts', '.jsx', '.tsx',
-      '.html', '.css', '.vue'
-    ],
-    positions: ['top'],         // 'top', 'bottom', or both
-    templates: [                // Comment templates ({pet} and {emoji} are replaced)
-      'Made with love by your pet {pet} {emoji}',
-      'Your coding companion {pet} was here {emoji}',
-      '{pet} approves this code {emoji}'
-    ]
-  },
+ // Auto-commenting settings
+ autoComment: {
+   showOnCreate: true,         // Add comments when creating new files
+   pets: ['cat', 'dog'],       // Pets to use (rotates randomly)
+   fileTypes: [                // File extensions to auto-comment
+     '.js', '.ts', '.jsx', '.tsx',
+     '.html', '.css', '.vue'
+   ],
+   position: 'top',            // Where to place comments: 'top' or 'bottom'
+   templates: [                // Comment templates ({pet} and {emoji} are replaced)
+     'Made with love by your pet {pet} {emoji}',
+     'Your coding companion {pet} was here {emoji}',
+     '{pet} approves this code {emoji}'
+   ]
+ },
 
-  // File watching (experimental)
-  fileWatcher: {
-    enabled: false,             // Watch for file changes
-    patterns: ['src/**/*.js'],  // Glob patterns to watch
-    showOnCreate: true,         // Show pet when files are created
-    showOnModify: false         // Show pet when files are modified
-  },
-
-  // Display settings (inherits from global config)
-  defaultPet: 'cat',           // Override global default pet
-  colors: true                 // Enable/disable colors
+ // Display settings (inherits from global config)
+ defaultPet: 'cat',           // Override global default pet
+ colors: true                 // Enable/disable colors
 };
 `;
 

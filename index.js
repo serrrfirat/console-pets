@@ -57,12 +57,18 @@ class ConsolePets {
   }
 
   random() {
-    const randomPet = this.pets[Math.floor(Math.random() * this.pets.length)];
+    // Use pets from config if available, otherwise use all pets
+    const configPets = this.config.autoComment?.pets;
+    const availablePets = configPets && configPets.length > 0 ? configPets : this.pets;
+    const randomPet = availablePets[Math.floor(Math.random() * availablePets.length)];
     this.happy(randomPet);
   }
 
   randomSad() {
-    const randomPet = this.pets[Math.floor(Math.random() * this.pets.length)];
+    // Use pets from config if available, otherwise use all pets
+    const configPets = this.config.autoComment?.pets;
+    const availablePets = configPets && configPets.length > 0 ? configPets : this.pets;
+    const randomPet = availablePets[Math.floor(Math.random() * availablePets.length)];
     this.sad(randomPet);
   }
 

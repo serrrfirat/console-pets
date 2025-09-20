@@ -1,6 +1,6 @@
 {
   "name": "console-pets",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Cute ASCII pets for your console that react to command success/failure",
   "main": "index.js",
   "bin": {
@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "npx console-pets && node test.js",
-    "postinstall": "node postinstall.js"
+    "postinstall": "node postinstall.js",
+    "preuninstall": "node preuninstall.js"
   },
   "keywords": [
     "console",
@@ -41,6 +42,7 @@
     "config.js",
     "auto-comment.js",
     "postinstall.js",
+    "preuninstall.js",
     "pets/",
     "README.md"
   ]
