@@ -19,6 +19,8 @@ A tiny, delightful library that shows adorable ASCII pets in your terminal. Perf
 npm install console-pets
 ```
 
+**ES Modules**: Console Pets now uses ES modules! Make sure your project has `"type": "module"` in package.json or use `.mjs` file extensions.
+
 Console Pets automatically creates a `.console-pets.config.js` file in your project root when installed, so you can customize settings right away!
 
 ## Quick Start
@@ -82,13 +84,13 @@ npx console-pets-run "git push"
 ### 3. Programmatic API
 
 ```javascript
-const pet = require('console-pets');
+import pet from 'console-pets';
 
-// Show specific pets
-pet.happy('cat');     // Happy cat
-pet.sad('dog');       // Sad dog
-pet.random();         // Random happy pet
-pet.randomSad();      // Random sad pet
+// Show specific pets (async methods - use await)
+await pet.happy('cat');     // Happy cat
+await pet.sad('dog');       // Sad dog
+await pet.random();         // Random happy pet
+await pet.randomSad();      // Random sad pet
 
 // Run commands with pet feedback
 pet.run('npm test').then(() => {
@@ -98,23 +100,23 @@ pet.run('npm test').then(() => {
 });
 
 // Create files with auto-comments
-pet.createFile('src/utils.js');
-pet.createFileWithTemplate('components/Modal.tsx');
+await pet.createFile('src/utils.js');
+await pet.createFileWithTemplate('components/Modal.tsx');
 ```
 
 ### 4. In Your Code
 
 ```javascript
-const pet = require('console-pets');
+import pet from 'console-pets';
 
 try {
   // Your code here
   await buildProject();
   console.log("Build successful!");
-  pet.happy('robot');
+  await pet.happy('robot');
 } catch (error) {
   console.log("Build failed!");
-  pet.sad('robot');
+  await pet.sad('robot');
 }
 ```
 
@@ -433,19 +435,19 @@ Here are all the cute pets available in Console Pets. Use the pet code (shown in
 ### Express Server
 
 ```javascript
-const pet = require('console-pets');
-const express = require('express');
+import pet from 'console-pets';
+import express from 'express';
 
 const app = express();
 
-app.listen(3000, () => {
+app.listen(3000, async () => {
   console.log('Server running on port 3000');
-  pet.happy('robot');
+  await pet.happy('robot');
 });
 
-app.use((err, req, res, next) => {
+app.use(async (err, req, res, next) => {
   console.error('Server error:', err.message);
-  pet.sad('robot');
+  await pet.sad('robot');
   res.status(500).send('Something broke!');
 });
 ```
@@ -453,13 +455,13 @@ app.use((err, req, res, next) => {
 ### Testing
 
 ```javascript
-const pet = require('console-pets');
+import pet from 'console-pets';
 
-afterEach(() => {
+afterEach(async () => {
   if (global.testResults.success) {
-    pet.happy('cat');
+    await pet.happy('cat');
   } else {
-    pet.sad('cat');
+    await pet.sad('cat');
   }
 });
 ```

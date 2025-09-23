@@ -1,7 +1,7 @@
 // Console Pets Configuration
 // This file controls how Console Pets behaves in your project
 
-module.exports = {
+export default {
   // Auto-commenting settings
   autoComment: {
     showOnCreate: true,         // Add comments when creating new files

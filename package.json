@@ -1,7 +1,8 @@
 {
   "name": "console-pets",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Cute ASCII pets for your console that react to command success/failure",
+  "type": "module",
   "main": "index.js",
   "bin": {
     "console-pets": "./cli.js",

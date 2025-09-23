@@ -1,9 +1,11 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+import { createRequire } from 'module';
 
 class Config {
   constructor() {
-    this.globalConfigPath = path.join(require('os').homedir(), '.console-pets.json');
+    this.globalConfigPath = path.join(os.homedir(), '.console-pets.json');
     this.projectConfigPath = path.join(process.cwd(), '.console-pets.config.js');
     this.config = this.loadConfig();
   }
@@ -58,6 +60,7 @@ class Config {
     // Load project config (takes precedence)
     try {
       if (fs.existsSync(this.projectConfigPath)) {
+        const require = createRequire(import.meta.url);
         delete require.cache[require.resolve(this.projectConfigPath)];
         const projectConfig = require(this.projectConfigPath);
         config = this.mergeDeep(config, projectConfig);
@@ -108,7 +111,7 @@ class Config {
     const configContent = `// Console Pets Configuration
 // This file controls how Console Pets behaves in your project
 
-module.exports = {
+export default {
  // Auto-commenting settings
  autoComment: {
    showOnCreate: true,         // Add comments when creating new files
@@ -166,4 +169,4 @@ module.exports = {
   }
 }
 
-module.exports = new Config();
+export default new Config();

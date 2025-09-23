@@ -1,10 +1,10 @@
-const chalk = require('chalk');
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
-const { exec } = require('child_process');
-const config = require('./config');
-const autoCommenter = require('./auto-comment');
+import chalk from 'chalk';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+import { exec } from 'child_process';
+import config from './config.js';
+import autoCommenter from './auto-comment.js';
 
 class ConsolePets {
   constructor() {
@@ -17,20 +17,20 @@ class ConsolePets {
     this.config = config.get();
   }
 
-  getPetArt(petType, mood) {
+  async getPetArt(petType, mood) {
     try {
-      const pet = require(`./pets/${petType}`);
+      const pet = (await import(`./pets/${petType}.js`)).default;
       return pet[mood] || pet.happy;
     } catch (error) {
       // Fallback to cat if pet not found
-      const cat = require('./pets/cat');
+      const cat = (await import('./pets/cat.js')).default;
       return cat[mood] || cat.happy;
     }
   }
 
-  show(petType, mood = 'happy') {
+  async show(petType, mood = 'happy') {
     const type = petType || this.config.defaultPet || this.defaultPet;
-    const art = this.getPetArt(type, mood);
+    const art = await this.getPetArt(type, mood);
 
     const color = mood === 'happy' ? 'green' : 'red';
     const emoji = mood === 'happy' ? '😊' : '😢';
@@ -48,28 +48,28 @@ class ConsolePets {
     console.log(); // Empty line
   }
 
-  happy(petType) {
-    this.show(petType, 'happy');
+  async happy(petType) {
+    await this.show(petType, 'happy');
   }
 
-  sad(petType) {
-    this.show(petType, 'sad');
+  async sad(petType) {
+    await this.show(petType, 'sad');
   }
 
-  random() {
+  async random() {
     // Use pets from config if available, otherwise use all pets
     const configPets = this.config.autoComment?.pets;
     const availablePets = configPets && configPets.length > 0 ? configPets : this.pets;
     const randomPet = availablePets[Math.floor(Math.random() * availablePets.length)];
-    this.happy(randomPet);
+    await this.happy(randomPet);
   }
 
-  randomSad() {
+  async randomSad() {
     // Use pets from config if available, otherwise use all pets
     const configPets = this.config.autoComment?.pets;
     const availablePets = configPets && configPets.length > 0 ? configPets : this.pets;
     const randomPet = availablePets[Math.floor(Math.random() * availablePets.length)];
-    this.sad(randomPet);
+    await this.sad(randomPet);
   }
 
   setPet(petType) {
@@ -94,17 +94,17 @@ class ConsolePets {
     return emojis[petType] || '🐱';
   }
 
-  run(command) {
+  async run(command) {
     return new Promise((resolve, reject) => {
-      exec(command, (error, stdout, stderr) => {
+      exec(command, async (error, stdout, stderr) => {
         if (error) {
           console.log(stdout);
           console.error(stderr);
-          this.sad();
+          await this.sad();
           reject(error);
         } else {
           console.log(stdout);
-          this.happy();
+          await this.happy();
           resolve(stdout);
         }
       });
@@ -124,30 +124,30 @@ class ConsolePets {
   }
 
   // Auto-commenting features
-  createFile(filePath, content = '') {
-    return autoCommenter.createFile(filePath, content);
+  async createFile(filePath, content = '') {
+    return await autoCommenter.createFile(filePath, content);
   }
 
-  createFileWithTemplate(filePath) {
+  async createFileWithTemplate(filePath) {
     const ext = path.extname(filePath);
     const template = autoCommenter.getFileTemplate(ext);
-    return this.createFile(filePath, template);
+    return await this.createFile(filePath, template);
   }
 
-  addCommentToFile(filePath) {
-    return autoCommenter.addCommentToExistingFile(filePath);
+  async addCommentToFile(filePath) {
+    return await autoCommenter.addCommentToExistingFile(filePath);
   }
 
   // Configuration management
-  createProjectConfig() {
+  async createProjectConfig() {
     const success = config.createProjectConfig();
     if (success) {
       console.log('✅ Created .console-pets.config.js in your project!');
       console.log('Edit this file to customize Console Pets behavior.');
-      this.happy();
+      await this.happy();
     } else {
       console.log('❌ Failed to create project config file.');
-      this.sad();
+      await this.sad();
     }
     return success;
   }
@@ -172,7 +172,7 @@ class ConsolePets {
     console.log();
   }
 
-  toggleShowOnCreate() {
+  async toggleShowOnCreate() {
     const current = config.get('autoComment')?.showOnCreate !== false; // Default true
     const newValue = !current;
 
@@ -185,9 +185,9 @@ class ConsolePets {
       console.log('Or remove the project config to use global settings.');
 
       if (newValue) {
-        this.happy();
+        await this.happy();
       } else {
-        this.sad();
+        await this.sad();
       }
       return;
     }
@@ -198,21 +198,21 @@ class ConsolePets {
     console.log(`Show on create ${newValue ? 'enabled' : 'disabled'} ✨`);
 
     if (newValue) {
-      this.happy();
+      await this.happy();
       console.log('New files will now have pet comments! 🎉');
     } else {
-      this.sad();
+      await this.sad();
       console.log('New files will be created without pet comments.');
     }
   }
 
-  setupScripts() {
+  async setupScripts() {
     try {
       const packagePath = path.join(process.cwd(), 'package.json');
 
       if (!fs.existsSync(packagePath)) {
         console.error('❌ No package.json found in current directory');
-        this.sad();
+        await this.sad();
         return false;
       }
 
@@ -220,7 +220,7 @@ class ConsolePets {
 
       if (!packageJson.scripts) {
         console.error('❌ No scripts section found in package.json');
-        this.sad();
+        await this.sad();
         return false;
       }
 
@@ -242,7 +242,7 @@ class ConsolePets {
 
       if (!modified) {
         console.log('✅ All scripts already have console-pets!');
-        this.happy();
+        await this.happy();
         return true;
       }
 
@@ -258,22 +258,22 @@ class ConsolePets {
         }
       });
 
-      this.happy();
+      await this.happy();
       return true;
     } catch (error) {
       console.error('❌ Failed to setup scripts:', error.message);
-      this.sad();
+      await this.sad();
       return false;
     }
   }
 
-  removeScripts() {
+  async removeScripts() {
     try {
       const packagePath = path.join(process.cwd(), 'package.json');
 
       if (!fs.existsSync(packagePath)) {
         console.error('❌ No package.json found in current directory');
-        this.sad();
+        await this.sad();
         return false;
       }
 
@@ -281,7 +281,7 @@ class ConsolePets {
 
       if (!packageJson.scripts) {
         console.error('❌ No scripts section found in package.json');
-        this.sad();
+        await this.sad();
         return false;
       }
 
@@ -303,7 +303,7 @@ class ConsolePets {
 
       if (!modified) {
         console.log('✅ No console-pets found in scripts');
-        this.happy();
+        await this.happy();
         return true;
       }
 
@@ -319,14 +319,14 @@ class ConsolePets {
         }
       });
 
-      this.happy();
+      await this.happy();
       return true;
     } catch (error) {
       console.error('❌ Failed to remove from scripts:', error.message);
-      this.sad();
+      await this.sad();
       return false;
     }
   }
 }
 
-module.exports = new ConsolePets();
+export default new ConsolePets();

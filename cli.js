@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const pet = require('./index.js');
+import pet from './index.js';
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -75,7 +75,7 @@ async function main() {
   // Handle regular console-pets commands
   switch (command) {
     case 'happy':
-      pet.happy(subcommand);
+      await pet.happy(subcommand);
       break;
 
     case 'sad':
@@ -169,8 +169,8 @@ async function main() {
   }
 }
 
-main().catch(error => {
+main().catch(async error => {
   console.error('Error:', error.message);
-  pet.sad();
+  await pet.sad();
   process.exit(1);
 });

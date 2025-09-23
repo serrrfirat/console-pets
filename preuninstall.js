@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 // Clean up console-pets from package.json scripts
 const packagePath = path.join(process.cwd(), 'package.json');

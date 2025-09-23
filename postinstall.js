@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
+async function postInstall() {
 // Get the directory where console-pets is being installed
 const installDir = process.cwd();
 const configPath = path.join(installDir, '.console-pets.config.js');
@@ -32,7 +33,7 @@ if (fs.existsSync(configPath)) {
 const configContent = `// Console Pets Configuration
 // This file controls how Console Pets behaves in your project
 
-module.exports = {
+export default {
   // Auto-commenting settings
   autoComment: {
     showOnCreate: true,         // Add comments when creating new files
@@ -69,10 +70,13 @@ try {
   console.log('Edit .console-pets.config.js to customize settings!');
 
   // Show a happy pet to celebrate installation
-  const pet = require('./index.js');
-  pet.happy('cat');
+  const pet = (await import('./index.js')).default;
+  await pet.happy('cat');
 
 } catch (error) {
   console.log('⚠️  Console Pets installed, but could not create config file');
   console.log('   Run "npx console-pets init" to create it manually');
 }
+}
+
+postInstall().catch(console.error);

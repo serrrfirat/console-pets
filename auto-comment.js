@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const config = require('./config');
+import fs from 'fs';
+import path from 'path';
+import config from './config.js';
 
 class AutoCommenter {
   constructor() {
@@ -58,7 +58,7 @@ class AutoCommenter {
     return commentStyles[ext] || '// ';
   }
 
-  generateComment(filePath) {
+  async generateComment(filePath) {
     const pet = this.getRandomPet();
     const emoji = this.getPetEmoji(pet);
     const template = this.getRandomTemplate();
@@ -66,7 +66,7 @@ class AutoCommenter {
     const ext = path.extname(filePath);
 
     // Get ASCII art for the SAME pet we selected
-    const petArt = this.getPetAsciiArt(pet);
+    const petArt = await this.getPetAsciiArt(pet);
 
     // Generate the text comment
     let textComment = template
@@ -97,15 +97,15 @@ class AutoCommenter {
     return fullComment;
   }
 
-  getPetAsciiArt(petType) {
+  async getPetAsciiArt(petType) {
     try {
-      const petArt = require('./pets/' + petType);
+      const petArt = (await import(`./pets/${petType}.js`)).default;
       // Always use happy mood for comments
       return petArt.happy || petArt.sad || ['No art available'];
     } catch (error) {
       // Fallback to cat if pet not found
       try {
-        const catArt = require('./pets/cat');
+        const catArt = (await import('./pets/cat.js')).default;
         return catArt.happy;
       } catch (e) {
         return ['🐾 Pet art not found'];
@@ -113,12 +113,12 @@ class AutoCommenter {
     }
   }
 
-  addCommentToFile(filePath, content = '', forCreation = true) {
+  async addCommentToFile(filePath, content = '', forCreation = true) {
     if (!this.shouldCommentFile(filePath, forCreation)) {
       return content;
     }
 
-    const comment = this.generateComment(filePath);
+    const comment = await this.generateComment(filePath);
     const position = config.get('autoComment')?.position || 'top';
 
     let newContent = content;
@@ -132,7 +132,7 @@ class AutoCommenter {
     return newContent;
   }
 
-  createFile(filePath, initialContent = '') {
+  async createFile(filePath, initialContent = '') {
     try {
       // Ensure directory exists
       const dir = path.dirname(filePath);
@@ -141,7 +141,7 @@ class AutoCommenter {
       }
 
       // Add comment to content (for creation)
-      const contentWithComment = this.addCommentToFile(filePath, initialContent, true);
+      const contentWithComment = await this.addCommentToFile(filePath, initialContent, true);
 
       // Write file
       fs.writeFileSync(filePath, contentWithComment);
@@ -150,7 +150,7 @@ class AutoCommenter {
         console.log(`📝 Created ${filePath} with pet comment!`);
 
         // Show a happy pet
-        const pet = require('./index');
+        const pet = (await import('./index.js')).default;
         const randomPet = this.getRandomPet();
         pet.happy(randomPet);
       } else {
@@ -257,7 +257,7 @@ if __name__ == "__main__":
     return templates[fileType] || '';
   }
 
-  addCommentToExistingFile(filePath) {
+  async addCommentToExistingFile(filePath) {
     try {
       if (!fs.existsSync(filePath)) {
         console.error(`File ${filePath} does not exist`);
@@ -274,7 +274,7 @@ if __name__ == "__main__":
       const existingContent = fs.readFileSync(filePath, 'utf8');
 
       // Generate comment
-      const comment = this.generateComment(filePath);
+      const comment = await this.generateComment(filePath);
       const position = config.get('autoComment')?.position || 'top';
 
       // Check if file already has a pet comment (look for ASCII art patterns)
@@ -321,4 +321,4 @@ if __name__ == "__main__":
   }
 }
 
-module.exports = new AutoCommenter();
+export default new AutoCommenter();

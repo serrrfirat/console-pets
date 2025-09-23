@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   happy: [
     '    /\\_   _/\\    ',
     '   (  o.o  )   ',
