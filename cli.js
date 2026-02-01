@@ -16,8 +16,12 @@ Usage:
   console-pets-run "<command>"
 
 Pet Commands:
-  happy <pet>        Show happy pet (cat, dog, robot, dragon, hamster, alien)
+  happy <pet>        Show happy pet (cat, dog, robot, dragon, hamster, alien, lobster)
   sad <pet>          Show sad pet
+  thinking <pet>     Show thinking pet
+  excited <pet>      Show excited pet
+  idle <pet>         Show idle pet
+  sleeping <pet>     Show sleeping pet
   random             Show random happy pet
   random-sad         Show random sad pet
   list               List all available pets
@@ -50,7 +54,7 @@ Examples:
   console-pets config
   console-pets-run "npm test"
 
-Pet Types: cat 🐱, dog 🐶, robot 🤖, dragon 🐉, hamster 🐹, alien 👽
+Pet Types: cat 🐱, dog 🐶, robot 🤖, dragon 🐉, hamster 🐹, alien 👽, lobster 🦞
 `);
 }
 
@@ -80,6 +84,22 @@ async function main() {
 
     case 'sad':
       pet.sad(subcommand);
+      break;
+
+    case 'thinking':
+      pet.thinking(subcommand);
+      break;
+
+    case 'excited':
+      pet.excited(subcommand);
+      break;
+
+    case 'idle':
+      pet.idle(subcommand);
+      break;
+
+    case 'sleeping':
+      pet.sleeping(subcommand);
       break;
 
     case 'random':

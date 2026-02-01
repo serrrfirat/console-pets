@@ -8,7 +8,7 @@ import autoCommenter from './auto-comment.js';
 
 class ConsolePets {
   constructor() {
-    this.pets = ['cat', 'dog', 'robot', 'dragon', 'hamster', 'alien'];
+    this.pets = ['cat', 'dog', 'robot', 'dragon', 'hamster', 'alien', 'lobster'];
     this.defaultPet = 'cat';
     this.config = config.get();
   }
@@ -32,8 +32,16 @@ class ConsolePets {
     const type = petType || this.config.defaultPet || this.defaultPet;
     const art = await this.getPetArt(type, mood);
 
-    const color = mood === 'happy' ? 'green' : 'red';
-    const emoji = mood === 'happy' ? '😊' : '😢';
+    const moodConfig = {
+      happy: { color: 'green', emoji: '😊' },
+      sad: { color: 'red', emoji: '😢' },
+      thinking: { color: 'yellow', emoji: '🤔' },
+      excited: { color: 'magenta', emoji: '🎉' },
+      idle: { color: 'cyan', emoji: '😴' },
+      sleeping: { color: 'blue', emoji: '💤' }
+    };
+
+    const { color, emoji } = moodConfig[mood] || moodConfig.happy;
 
     console.log(); // Empty line
 
@@ -54,6 +62,22 @@ class ConsolePets {
 
   async sad(petType) {
     await this.show(petType, 'sad');
+  }
+
+  async thinking(petType) {
+    await this.show(petType, 'thinking');
+  }
+
+  async excited(petType) {
+    await this.show(petType, 'excited');
+  }
+
+  async idle(petType) {
+    await this.show(petType, 'idle');
+  }
+
+  async sleeping(petType) {
+    await this.show(petType, 'sleeping');
   }
 
   async random() {
@@ -89,7 +113,8 @@ class ConsolePets {
       robot: '🤖',
       dragon: '🐉',
       hamster: '🐹',
-      alien: '👽'
+      alien: '👽',
+      lobster: '🦞'
     };
     return emojis[petType] || '🐱';
   }
